@@ -1,0 +1,51 @@
+$theme-colors: (
+  dark: #191919,
+  gray: #cecece,
+  primary: #111,
+  light: #f9f9f9
+);
+
+@import "node_modules/bootstrap/scss/bootstrap";
+
+:root, body, #root {
+  height: 100%;
+  width: 100%;
+}
+.main {
+  height: calc( 100% - 60px );
+  width: calc( 100% - 70px );
+  overflow: hidden;
+}
+.messages {
+  height: 50%;
+}
+body {
+  margin: 0;
+  font-family: "Roboto";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+textarea {
+  resize: none;
+}
+textarea::-webkit-scrollbar {
+  display: none;
+}
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+.ratio {
+  position: relative;
+  width: 100%;
+  &--1x1 {
+    padding-top: 100%;
+  }
+  &__inside {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+  }
+}

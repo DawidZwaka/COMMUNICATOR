@@ -1,0 +1,21 @@
+$item-size: 50px;
+
+.contactList {
+    min-width: 80px;
+    max-width: 80px;
+    flex: 1 1 80px;
+    padding: 0;
+    margin: 0;
+    box-shadow: 5px 0px 5px 1px rgba(#cecece, .2);
+    &__item {
+        width: $item-size;
+        height: $item-size;
+        &Inside {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            top: 0;
+        }
+    }
+}

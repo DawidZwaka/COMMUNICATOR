@@ -1,5 +1,5 @@
 import React from 'react';
-import Layout from '../layouts/mainLayout';
+import Layout from '../layouts/MainLayout';
 import { Jumbotron, Container, Col } from 'react-bootstrap';
 import SignInForm from '../components/auth/signinForm';
 

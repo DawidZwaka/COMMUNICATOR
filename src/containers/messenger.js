@@ -1,38 +1,59 @@
 import React from 'react';
-import Layout from '../layouts/mainLayout';
-import Chat from '../components/chat';
-import UsersList from '../components/usersList';
+import Layout from '../layouts/MainLayout';
+//import Chat from '../components/chat';
+import ContactList from '../components/communicator/ContactList/ContactList';
 import axios from '../util/axios';
-import IO from 'socket.io-client';
-import REST from '../util/getRESTapi';
+import { Redirect } from 'react-router-dom';
 
 class messenger extends React.Component {
 
     state = {
-        users: []
+        users: [],
+        room: {},
+        loading: true,
+        redirect: {
+            url: '/',
+            active: false
+        }
     }
+    getContacts = async () => await axios.get('/communicator/contact');
+
+    getRoom = async () => await axios.get('communicator/room/5db02ab711098c1a4c69e191');
 
     async componentDidMount() { 
+        try{  
+            const {data: contacts} = await this.getContacts();
+            const {data: room} = await this.getRoom();
 
-        const res = await axios.get('/auth/contacts');
+            this.setState({
+                users: [...this.state.users, ...contacts],
+                room,
+                loading: false
+            });
+        } catch ({response: {status}}) {
 
-        
-        this.setState({users: [...this.state.users, ...res.data.contacts]});
+            if(status === 401) {
 
-        const socket = IO(REST);
-        socket.on('userSignIn', data => {
-            
-            this.setState({users: [...this.state.users, {...data}]});
-        });
+                return this.setState({redirect: {
+                    url: '/login',
+                    active: true
+                }});
+            }
+        }
+ 
     }
 
     render() {
 
         return (
-            <Layout>
-                <UsersList users={this.state.users}/>
-                <Chat/>
-            </Layout>
+            <>
+                {this.state.redirect.active? <Redirect to={this.state.redirect.url}/> : null}
+                    <Layout>
+                        <ContactList users={this.state.users}/>
+                        {//<Chat room={this.state.room}/>
+                        }
+                    </Layout>
+            </>
         );
     }
 }
