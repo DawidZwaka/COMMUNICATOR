@@ -1,20 +1,37 @@
 import React from 'react';
 import MainMenu from '../components/UI/MainMenu/MainMenu';
-import { Container } from 'react-bootstrap';
+import Styled from 'styled-components';
+import { up } from 'styled-breakpoints';
 
-const MainLayout = ({containerClass, children}) => {
-    let classes = ['main', 'd-flex', 'h-100', 'm-0', 'flex-grow-1', 'p-0'];
-
-    if( typeof containerClass !== undefined ) {
-        classes = classes.concat(containerClass); 
+const Main = Styled.main`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 100%;
+    height: calc( 100% - 60px );
+    ${up('sm')} {
+        flex: 0 0 calc( 100% - 70px);
+        height: 100%;
     }
+    ${up('lg')} {
+        flex: 0 0 calc( 100% - 200px);
+    }
+    ${({direction}) => direction === 'column'? 'flex-direction: column;' : null}
+`
+
+const MainLayout = ({children, direction}) => {
+
     return (
         <>
             <MainMenu/>
-            <Container fluid="true" as="main" className={classes}>
+            <Main direction={direction}>
                 {children}
-            </Container>
+            </Main>
         </>);
+}
+
+MainLayout.defaultProps = {
+    direction: 'row'
 }
 
 export default MainLayout;

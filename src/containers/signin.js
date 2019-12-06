@@ -1,21 +1,30 @@
 import React from 'react';
 import Layout from '../layouts/MainLayout';
-import { Jumbotron, Container, Col } from 'react-bootstrap';
 import SignInForm from '../components/auth/signinForm';
+import Container from '../components/UI/Container/Container';
+import Styled from 'styled-components';
+
+const Header = Styled.h1`
+    text-align: center;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 100%;
+    transform: translate(-50%, -50%);
+`
 
 class SignIn extends React.Component {
 
     render() {
         return(
             <Layout>
-                <Container className="align-self-center">
-                    <Col className="mx-auto" md={8} lg={7} xl={6}>
-                        <Jumbotron className="bg-light py-5">
-                            <h2 className="display-4">Sign In</h2>
-                            <hr/>
-                            <SignInForm/>
-                        </Jumbotron>
-                    </Col>
+                <Container
+                    direction='column'
+                    padding={[5,2,3,2]}
+                    cntWidth={{xs: 12}}
+                    maxWidth={400}>
+                    <Header>Sign In</Header>
+                    <SignInForm/>
                 </Container>
             </Layout>
             );

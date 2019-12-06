@@ -1,16 +1,50 @@
 $theme-colors: (
-  dark: #191919,
-  gray: #cecece,
-  primary: #111,
-  light: #f9f9f9
+  primary: #0278cd,
+  secondary: #32333D,
+  header: #6A6D81,
+  third: #575A6A,
+  fourth: #2E2F37,
+  text: #A1A3B4,
+  light: #eee,
+  loader: #cecece,
 );
 
 @import "node_modules/bootstrap/scss/bootstrap";
+
+:root {
+  font-size: 10px;
+  --gradient: linear-gradient(135deg, rgba(2,120,205,1), rgba(16,152,161,1));
+}
 
 :root, body, #root {
   height: 100%;
   width: 100%;
 }
+#root {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+h1 {
+  font-size: 4rem
+}
+
+a {
+  font-weight: 300;
+  font-size: 1.4rem;
+  color: var(--text); 
+  transition: color .3s;
+  user-select: none;
+  &:hover {
+    color: var(--primary);
+    text-decoration: none;
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+}
+
 .main {
   height: calc( 100% - 60px );
   width: calc( 100% - 70px );
@@ -20,8 +54,11 @@ $theme-colors: (
   height: 50%;
 }
 body {
+  background: var(--secondary);
+  color: var(--text);
   margin: 0;
-  font-family: "Roboto";
+  padding: 0;
+  font-family: "Montserrat";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -47,5 +84,30 @@ code {
     top: 0;
     right: 0;
     bottom: 0;
+    width: 100%;
+  }
+}
+
+.loader {
+  &__bg {
+    background: map-get($theme-colors, gray);
+  }
+  &__bgAnim {
+    animation: loaderBgAnim 2s ease-in-out infinite both;
+  }
+}
+
+@keyframes loaderBgAnim {
+  0% {
+    background: map-get($theme-colors, gray-dark )
+  }
+  30% {
+    background: map-get($theme-colors, gray )
+  }
+  70% {
+    background: map-get($theme-colors, gray )
+  }
+  100% {
+    background: map-get($theme-colors, gray-dark )
   }
 }

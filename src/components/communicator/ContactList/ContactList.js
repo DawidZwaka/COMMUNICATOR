@@ -2,8 +2,25 @@ import React from 'react';
 import axios from '../../../util/axios';
 import { Redirect } from 'react-router-dom';
 import InitialBtn from '../../UI/Buttons/initialButton';
-import { TimelineMax } from 'gsap';
-import './contactList.scss';
+import gsap from 'gsap';
+import Styled from 'styled-components';
+import { up } from 'styled-breakpoints';
+
+const List = Styled.ul`
+    list-style: none;
+    padding: .5em 0;
+    flex: 0 0 100%;
+    height: 80px;
+    display: flex;
+    margin: 0;
+
+    ${up('tablet')} {
+        flex: 0 0 80px
+        height: 100%
+        flex-direction: column;
+        align-items: center;
+    }
+`
 
 class ContactList extends React.Component {
 
@@ -11,7 +28,7 @@ class ContactList extends React.Component {
         super(props);
 
         this.btns = [];
-        this.tl = new TimelineMax({repeat: -1, yoyo: true, repeatDelay: .4});
+        this.tl = gsap.timeline({repeat: -1, yoyo: true, repeatDelay: .4});
     }
     
     state = {
@@ -27,7 +44,7 @@ class ContactList extends React.Component {
     }
 
     async componentDidMount() {
-        this.tl.staggerFromTo(this.btns, .7, {left: '60px', opacity: 0}, {left: '0', opacity: 1}, .6);
+        this.tl.staggerFromTo(this.btns, .7, {top: '60px', opacity: 0}, {top: '0', opacity: 1}, .6);
 
         const contacts = await this.getContacts();
 
@@ -51,7 +68,7 @@ class ContactList extends React.Component {
             const render = [];
 
             for(let i=0;i<3;i++) {
-                render.push( <InitialBtn key={i} ref={ref => this.btns[i] = ref}/> );
+                render.push( <InitialBtn size="50" key={i} ref={ref => this.btns[i] = ref}/> );
             };
 
             return render;
@@ -63,18 +80,19 @@ class ContactList extends React.Component {
         } else {
             render = this.state.contacts.map( user => {
         
-                return <li key={user._id} className="contactList__item mb-1 mx-auto">
-                        <InitialBtn user={user} clickHandler={this.createRoomHandler}/>
-                    </li>
+                return (
+                    <li key={user._id}>
+                        <InitialBtn size="50" user={user} clickHandler={this.createRoomHandler}/>
+                    </li>);
             });
         }
 
         return (
             <>
                 {redirect? <Redirect to={redirect}/> : null}
-                <ul className="list-unstyled d-flex flex-column w-100 contactList py-2">
+                <List>
                     {render}
-                </ul>
+                </List>
             </>
         );
     }

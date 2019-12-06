@@ -1,23 +1,23 @@
 import React, {useEffect} from 'react';
 import MessageBallon from '../MessageBallon/MessageBallon';
-import { TimelineMax, Linear } from 'gsap';
+import gsap, { Linear } from 'gsap';
 import './MessageList.scss';
 
 const MessageList = ({currentUser, messages, loading}) => {
 
-    const tl = new TimelineMax({
+    const tl = gsap.timeline({
         yoyo: true,
         repeat: -1,
-        repeatDelay: .7
+        repeatDelay: .4
     });
     const messagesRefs = [];
 
     useEffect(() => {
         tl.staggerFromTo(
             messagesRefs, 
-            .7, 
-            {ease:Linear.easeNone, opacity: 0, transform: 'translateY(-50%)'},
-            {ease:Linear.easeNone, opacity: 1, transform: 'translateY(0)'},
+            .6, 
+            {ease:Linear.easeNone, opacity: 0, top: '-50px'},
+            {ease:Linear.easeNone, opacity: 1, top: 0},
             .6);
     });
     

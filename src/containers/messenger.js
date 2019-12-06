@@ -1,7 +1,7 @@
 import React from 'react';
 import Layout from '../layouts/MainLayout';
 //import Chat from '../components/chat';
-import ContactList from '../components/communicator/ContactList/ContactList';
+//import ContactList from '../components/communicator/ContactList/ContactList';
 import axios from '../util/axios';
 import { Redirect } from 'react-router-dom';
 
@@ -44,12 +44,13 @@ class messenger extends React.Component {
     }
 
     render() {
-
+        
         return (
             <>
                 {this.state.redirect.active? <Redirect to={this.state.redirect.url}/> : null}
                     <Layout>
-                        <ContactList users={this.state.users}/>
+                        {/*<ContactList users={this.state.users}/>
+                        */}
                         {//<Chat room={this.state.room}/>
                         }
                     </Layout>

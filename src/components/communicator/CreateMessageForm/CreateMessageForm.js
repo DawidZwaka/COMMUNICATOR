@@ -38,7 +38,6 @@ class CreateMessageForm extends FormClass {
             render = (
                 <div className="CMFLoader">
                     <div className="bg-gray rounded-lg w-100 CMF__inputArea"></div>
-                    <div className="bg-gray rounded-lg w-100 CMF__submit mt-3"></div>
                 </div>);
         } else {
             render = (
