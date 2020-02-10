@@ -32,21 +32,21 @@ const Input = Styled.input`
     }
 `;
 
-const FormInput = ({type, placeholder, children}) => {
+const FormInput = ({type, children, ...props}) => {
     let input;
 
     switch(type) {
         case 'email': {
-            input = <Input type="email" placeholder={placeholder}/>
+            input = <Input type="email"  {...props}/>;
             break;
         }
         case 'password': {
-            input = <Input type="password" placeholder={placeholder}/>
+            input = <Input type="password"  {...props}/>;
             break;
         }
         case 'text':
         default: {
-            input = <Input type="text" placeholder={placeholder} />
+            input = <Input type="text" {...props}/>;
         }
     }
 
@@ -61,7 +61,8 @@ const FormInput = ({type, placeholder, children}) => {
 }
 
 FormInput.defaultProps = {
-    type: 'text'
+    type: 'text',
+    name: "text"
 }
 
 export default FormInput;

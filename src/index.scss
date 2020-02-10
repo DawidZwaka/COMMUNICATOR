@@ -8,6 +8,10 @@ $theme-colors: (
   light: #eee,
   loader: #cecece,
 );
+$headers-size: (
+  h1: 4rem,
+  h2: 3.5rem
+);
 
 @import "node_modules/bootstrap/scss/bootstrap";
 
@@ -25,8 +29,10 @@ $theme-colors: (
   flex-wrap: wrap;
 }
 
-h1 {
-  font-size: 4rem
+@each $header, $size in $headers-size {
+  #{$header} {
+    font-size: $size;
+  }
 }
 
 a {

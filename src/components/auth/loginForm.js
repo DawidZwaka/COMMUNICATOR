@@ -18,7 +18,7 @@ const Form = Styled.form`
 
 class LoginForm extends FormClass {
 
-    constructor(props) {
+   /* constructor(props) {
         super(props);
 
         this.state.inputs = {
@@ -43,41 +43,41 @@ class LoginForm extends FormClass {
 
         try {
             const {data: {token}} = await this.sendAuthReq();
-        
+
             sessionStorage.setItem('token', token);
             this.setState({redirect: { active: true } });
 
         } catch({response: {status}}) {
 
         }
-    }
+    }*/
 
     render() {
-        const {
+        /*const {
             inputs: {password, email},
             errors: {password: passwordErr, email: emailErr},
             redirect
-        } = this.state;
+        } = this.state;*/
 
         return (
             <>
-                {redirect.active? <Redirect to={redirect.url}/> : null}
+                {/*{redirect.active? <Redirect to={redirect.url}/> : null}*/}
                 <Form>
-                    <Input 
-                        type='email' 
-                        placeholder="Email" 
+                   {/* <Input
+                        type='email'
+                        placeholder="Email"
                         value={email}
                         change={this.updateValue}>
                         <EmailIcon/>
                     </Input>
-                    <Input 
-                        type='password' 
+                    <Input
+                        type='password'
                         placeholder="Password"
                         value={password}
                         change={this.updateValue}>
                         <KeyIcon/>
                     </Input>
-                    <Button type='submit' click={this.loginHandler}>Login</Button>
+                    <Button type='submit' click={this.loginHandler}>Login</Button>*/}
                 </Form>
             </>
         );

@@ -2,17 +2,17 @@ import React from 'react';
 
 class Form extends React.Component {
     state = {
-        inputs: {},
-        errors: [],
+        inputs: {...this.props.inputs},
         redirect: false
-    }
+    };
 
     updateValue = ev => {
-        const input = ev.target;
-    
-        this.setState({
-            inputs: {...this.state.inputs ,[input.name]: input.value}
-        });
+        const {name, value} = ev.target;
+        const inputs = {...this.state.inputs};
+
+        inputs[name] = {...inputs[name], value};
+
+        this.setState({inputs});
     }
 }
 
