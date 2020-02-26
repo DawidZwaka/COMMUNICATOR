@@ -16,22 +16,21 @@ const Main = Styled.main`
     ${up('lg')} {
         flex: 0 0 calc( 100% - 200px);
     }
-    ${({direction}) => direction === 'column'? 'flex-direction: column;' : null}
-`
+    ${({ direction }) =>
+		direction === 'column' ? 'flex-direction: column;' : null}
+`;
 
-const MainLayout = ({children, direction}) => {
-
-    return (
-        <>
-            <MainMenu/>
-            <Main direction={direction}>
-                {children}
-            </Main>
-        </>);
-}
+const MainLayout = ({ children, direction }) => {
+	return (
+		<>
+			<MainMenu />
+			<Main direction={direction}>{children}</Main>
+		</>
+	);
+};
 
 MainLayout.defaultProps = {
-    direction: 'row'
-}
+	direction: 'row'
+};
 
 export default MainLayout;

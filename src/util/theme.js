@@ -1,10 +1,10 @@
-const theme = { 
-    breakpoints: {
-        sm: 576,
-        md: 768,
-        lg: 992,
-        xl: 1200,
-    }
-}
+const theme = {
+	breakpoints: {
+		sm: 576,
+		md: 768,
+		lg: 992,
+		xl: 1200
+	}
+};
 export default theme;
-export const {breakpoints} = theme;
+export const { breakpoints } = theme;

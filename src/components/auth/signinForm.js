@@ -7,9 +7,9 @@ import Input from '../UI/FormInput/FormInput';
 import FormClass from '../../util/classes/form';
 
 //svgs
-import { ReactComponent as EmailIcon} from '../../assets/email.svg';
-import { ReactComponent as KeyIcon} from '../../assets/key.svg';
-import { ReactComponent as NicknameIcon} from '../../assets/user.svg';
+import { ReactComponent as EmailIcon } from '../../assets/email.svg';
+import { ReactComponent as KeyIcon } from '../../assets/key.svg';
+import { ReactComponent as NicknameIcon } from '../../assets/user.svg';
 
 const Form = Styled.form`
     display: flex;
@@ -18,98 +18,102 @@ const Form = Styled.form`
 `;
 
 class SignInForm extends FormClass {
+	constructor(props) {
+		super(props);
 
-    constructor(props) {
-        super(props);
+		this.state.inputs = {
+			nickname: '',
+			email: '',
+			password: '',
+			confirmPassword: ''
+		};
+		this.state.redirect = {
+			active: false,
+			url: this.props.redirectUrl
+		};
+	}
 
-        this.state.inputs = {
-            nickname: '',
-            email: '',
-            password: '',
-            confirmPassword: '',
-        }
-        this.state.redirect = {
-            active: false,
-            url: this.props.redirectUrl
-        }
-    }
-    
-    createUser = async ev => {
-        ev.preventDefault();
-    
-        const reqData = JSON.stringify({...this.state.inputs});
-    
-        const res = await fetch(`${REST}/auth/signin`, {
-            method: 'POST', 
-            body: reqData,
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        const resObject = await res.json();
+	createUser = async ev => {
+		ev.preventDefault();
 
-        if(res.status === 422) {
-            const ErrObject = {};
+		const reqData = JSON.stringify({ ...this.state.inputs });
 
-            resObject.errors.forEach(err => {
-               ErrObject[err.param] = err.msg 
-            });
+		const res = await fetch(`${REST}/auth/signin`, {
+			method: 'POST',
+			body: reqData,
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		});
+		const resObject = await res.json();
 
-            this.setState({errors: ErrObject});
-        } else {
+		if (res.status === 422) {
+			const ErrObject = {};
 
-            return this.setState({redirect: {active: true}});
-        }
-    }
-    
-    render() {
-        const {
-            inputs: {password, email},
-            errors: {password: passwordErr, email: emailErr},
-            redirect
-        } = this.state;
+			resObject.errors.forEach(err => {
+				ErrObject[err.param] = err.msg;
+			});
 
-        return (
-            <>
-            {redirect.active? <Redirect to={redirect.url}/> : null}
-            <Form>
-                    <Input 
-                        type='text' 
-                        placeholder='Nickname'
-                        name='nickname'
-                        value={email}
-                        change={this.updateValue}>
-                        <NicknameIcon/>
-                    </Input>
-                    <Input 
-                        type='email' 
-                        placeholder='Email'
-                        name='email'
-                        value={email}
-                        change={this.updateValue}>
-                        <EmailIcon/>
-                    </Input>
-                    <Input 
-                        type='password' 
-                        name='password'
-                        placeholder='Password'
-                        value={password}
-                        change={this.updateValue}>
-                        <KeyIcon/>
-                    </Input>
-                    <Input 
-                        type='password'
-                        name='confirmPassword'
-                        placeholder='Confirm Password'
-                        value={password}
-                        change={this.updateValue}>
-                        <KeyIcon/>
-                    </Input>
-                    <Button type='submit' click={this.createUser}>Login</Button>
-                </Form>
-            </>
-        );
-    }
+			this.setState({ errors: ErrObject });
+		} else {
+			return this.setState({ redirect: { active: true } });
+		}
+	};
+
+	render() {
+		const {
+			inputs: { password, email },
+			errors: { password: passwordErr, email: emailErr },
+			redirect
+		} = this.state;
+
+		return (
+			<>
+				{redirect.active ? <Redirect to={redirect.url} /> : null}
+				<Form>
+					<Input
+						type='text'
+						placeholder='Nickname'
+						name='nickname'
+						value={email}
+						change={this.updateValue}
+					>
+						<NicknameIcon />
+					</Input>
+					<Input
+						type='email'
+						placeholder='Email'
+						name='email'
+						value={email}
+						change={this.updateValue}
+					>
+						<EmailIcon />
+					</Input>
+					<Input
+						type='password'
+						name='password'
+						placeholder='Password'
+						value={password}
+						change={this.updateValue}
+					>
+						<KeyIcon />
+					</Input>
+					<Input
+						type='password'
+						name='confirmPassword'
+						placeholder='Confirm Password'
+						value={password}
+						change={this.updateValue}
+					>
+						<KeyIcon />
+					</Input>
+					<Button type='submit' click={this.createUser}>
+						Login
+					</Button>
+				</Form>
+			</>
+		);
+	}
 }
 
 export default SignInForm;

@@ -11,24 +11,24 @@ const Header = Styled.h1`
     left: 50%;
     width: 100%;
     transform: translate(-50%, -50%);
-`
+`;
 
 class SignIn extends React.Component {
-
-    render() {
-        return(
-            <Layout>
-                <Container
-                    direction='column'
-                    padding={[5,2,3,2]}
-                    cntWidth={{xs: 12}}
-                    maxWidth={400}>
-                    <Header>Sign In</Header>
-                    <SignInForm/>
-                </Container>
-            </Layout>
-            );
-    }
+	render() {
+		return (
+			<Layout>
+				<Container
+					direction='column'
+					padding={[5, 2, 3, 2]}
+					cntWidth={{ xs: 12 }}
+					maxWidth={400}
+				>
+					<Header>Sign In</Header>
+					<SignInForm />
+				</Container>
+			</Layout>
+		);
+	}
 }
 
 export default SignIn;

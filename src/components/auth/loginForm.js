@@ -17,8 +17,7 @@ const Form = Styled.form`
 `;
 
 class LoginForm extends FormClass {
-
-   /* constructor(props) {
+	/* constructor(props) {
         super(props);
 
         this.state.inputs = {
@@ -52,18 +51,18 @@ class LoginForm extends FormClass {
         }
     }*/
 
-    render() {
-        /*const {
+	render() {
+		/*const {
             inputs: {password, email},
             errors: {password: passwordErr, email: emailErr},
             redirect
         } = this.state;*/
 
-        return (
-            <>
-                {/*{redirect.active? <Redirect to={redirect.url}/> : null}*/}
-                <Form>
-                   {/* <Input
+		return (
+			<>
+				{/*{redirect.active? <Redirect to={redirect.url}/> : null}*/}
+				<Form>
+					{/* <Input
                         type='email'
                         placeholder="Email"
                         value={email}
@@ -78,10 +77,10 @@ class LoginForm extends FormClass {
                         <KeyIcon/>
                     </Input>
                     <Button type='submit' click={this.loginHandler}>Login</Button>*/}
-                </Form>
-            </>
-        );
-    }
+				</Form>
+			</>
+		);
+	}
 }
 
 export default LoginForm;
