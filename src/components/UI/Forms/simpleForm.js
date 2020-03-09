@@ -1,8 +1,32 @@
+/*
+
+██╗███╗   ███╗██████╗  ██████╗ ██████╗ ████████╗███████╗
+██║████╗ ████║██╔══██╗██╔═══██╗██╔══██╗╚══██╔══╝██╔════╝
+██║██╔████╔██║██████╔╝██║   ██║██████╔╝   ██║   ███████╗
+██║██║╚██╔╝██║██╔═══╝ ██║   ██║██╔══██╗   ██║   ╚════██║
+██║██║ ╚═╝ ██║██║     ╚██████╔╝██║  ██║   ██║   ███████║
+╚═╝╚═╝     ╚═╝╚═╝      ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝
+														 
+*/
+
 import Form from '../../../util/classes/form';
 import React from 'react';
 import Button from '../Buttons/SimpleButton';
-import Input from '../FormInput/FormInput';
+import Input from '../Input/Input';
 import Styled, { css } from 'styled-components';
+import { Redirect } from 'react-router-dom';
+import resolveError from '../../../util/resolveError';
+
+/*
+
+  ██████╗ ██████╗ ███╗   ██╗███████╗████████╗ █████╗ ███╗   ██╗███████╗
+██╔════╝██╔═══██╗████╗  ██║██╔════╝╚══██╔══╝██╔══██╗████╗  ██║██╔════╝
+██║     ██║   ██║██╔██╗ ██║███████╗   ██║   ███████║██╔██╗ ██║███████╗
+██║     ██║   ██║██║╚██╗██║╚════██║   ██║   ██╔══██║██║╚██╗██║╚════██║
+╚██████╗╚██████╔╝██║ ╚████║███████║   ██║   ██║  ██║██║ ╚████║███████║
+ ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝
+																	  
+*/
 
 const FormCnt = Styled.form`
     display: flex;
@@ -24,11 +48,27 @@ const FormCnt = Styled.form`
 	}};
 `;
 
+/*
+
+  ██████╗ ██████╗ ███╗   ███╗██████╗  ██████╗ ███╗   ██╗███████╗███╗   ██╗████████╗
+██╔════╝██╔═══██╗████╗ ████║██╔══██╗██╔═══██╗████╗  ██║██╔════╝████╗  ██║╚══██╔══╝
+██║     ██║   ██║██╔████╔██║██████╔╝██║   ██║██╔██╗ ██║█████╗  ██╔██╗ ██║   ██║   
+██║     ██║   ██║██║╚██╔╝██║██╔═══╝ ██║   ██║██║╚██╗██║██╔══╝  ██║╚██╗██║   ██║   
+╚██████╗╚██████╔╝██║ ╚═╝ ██║██║     ╚██████╔╝██║ ╚████║███████╗██║ ╚████║   ██║   
+ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝      ╚═════╝ ╚═╝  ╚═══╝╚══════╝╚═╝  ╚═══╝   ╚═╝   
+																				  
+*/
+
 class SimpleForm extends Form {
 	getInputs = () =>
-		Object.entries(this.state.inputs).map(([name, input]) => {
-			return <Input {...input} name={name} onChange={this.updateValue} />;
-		});
+		Object.entries(this.state.inputs).map(([name, input]) => (
+			<Input
+				{...input}
+				name={name}
+				onChange={this.updateValue}
+				value={this.state.inputs[name].value}
+			/>
+		));
 
 	getParsedInputState = () => {
 		const obj = {};
@@ -40,45 +80,69 @@ class SimpleForm extends Form {
 		return obj;
 	};
 
-	setErrorsForInputs = errs => {
-		const inputs = { ...this.state.inputs };
+	updateValidationErrors = errs => {
+		const inputs = { ...this.state.inputs },
+			errsArr = Object.values(errs),
+			inputIndexes = Object.keys(inputs);
 
-		errs.forEach(({ name, value }) => {
-			inputs[name].error = value;
+		inputIndexes.forEach(index => {
+			const err = errsArr.find(({ name }) => name === index);
+			let errValid;
+
+			if (err) errValid = { isValid: false, errorMessage: err.value };
+			else errValid = { isValid: true, errorMessage: null };
+
+			inputs[index].validation = {
+				...inputs[index].validation,
+				...errValid
+			};
 		});
 
-		return inputs;
+		this.setState({ inputs, frontValidation: true });
 	};
+
+	updateRedirectionPath = path => this.setState({ redirect: path });
 
 	submitHandler = async ev => {
 		ev.preventDefault();
+
 		const {
 			state,
 			getParsedInputState,
-			props: { sendRequest }
+			updateRedirectionPath,
+			updateValidationErrors,
+			props: { sendRequestFunc, resolveSuccessFunc }
 		} = this;
 
 		try {
-			const res = await sendRequest(getParsedInputState());
-		} catch ({ response: { status, data } }) {
-			if (status === 422) {
-				this.setErrorsForInputs(data);
-			}
+			const res = await sendRequestFunc(getParsedInputState());
+
+			return resolveSuccessFunc(this.updateRedirectionPath);
+		} catch (res) {
+			return resolveError(
+				res,
+				updateValidationErrors,
+				updateRedirectionPath
+			);
 		}
 	};
 
 	render() {
 		const {
 			props: { direction, submitText },
-			submitHandler
+			submitHandler,
+			state: { redirect }
 		} = this;
 		const inputs = this.getInputs();
 
 		return (
-			<FormCnt direction={direction} noValidate>
-				{inputs}
-				<Button click={submitHandler}>{submitText}</Button>
-			</FormCnt>
+			<>
+				{redirect ? <Redirect to={redirect} /> : null}
+				<FormCnt direction={direction} noValidate>
+					{inputs}
+					<Button click={submitHandler}>{submitText}</Button>
+				</FormCnt>
+			</>
 		);
 	}
 }

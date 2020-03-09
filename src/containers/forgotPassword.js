@@ -1,3 +1,14 @@
+/*
+
+██╗███╗   ███╗██████╗  ██████╗ ██████╗ ████████╗███████╗
+██║████╗ ████║██╔══██╗██╔═══██╗██╔══██╗╚══██╔══╝██╔════╝
+██║██╔████╔██║██████╔╝██║   ██║██████╔╝   ██║   ███████╗
+██║██║╚██╔╝██║██╔═══╝ ██║   ██║██╔══██╗   ██║   ╚════██║
+██║██║ ╚═╝ ██║██║     ╚██████╔╝██║  ██║   ██║   ███████║
+╚═╝╚═╝     ╚═╝╚═╝      ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝
+														 
+*/
+
 import React from 'react';
 import Layout from '../layouts/MainLayout';
 import SimpleForm from '../components/UI/Forms/simpleForm';
@@ -5,10 +16,36 @@ import Container from '../components/UI/Container/Container';
 import Header from '../components/UI/Header/Header';
 import axios from '../util/axios';
 import ResolveError from '../util/resolveError';
+import validator from 'validator';
 
-const sendForgotPasswordReq = async inputs => {
-	return await axios.post('/auth/forgot-password', inputs);
-};
+/*
+
+██╗  ██╗███████╗██╗     ██████╗ ███████╗██████╗ ███████╗
+██║  ██║██╔════╝██║     ██╔══██╗██╔════╝██╔══██╗██╔════╝
+███████║█████╗  ██║     ██████╔╝█████╗  ██████╔╝███████╗
+██╔══██║██╔══╝  ██║     ██╔═══╝ ██╔══╝  ██╔══██╗╚════██║
+██║  ██║███████╗███████╗██║     ███████╗██║  ██║███████║
+╚═╝  ╚═╝╚══════╝╚══════╝╚═╝     ╚══════╝╚═╝  ╚═╝╚══════╝
+														 
+*/
+
+const sendForgotPasswordReq = async inputs =>
+	await axios.post('/auth/forgot-password', inputs);
+
+const resolveSuccess = updateRedirect => {
+	updateRedirect('/forgot-password/?active');
+}
+
+/*
+
+  ██████╗ ██████╗ ███╗   ███╗██████╗  ██████╗ ███╗   ██╗███████╗███╗   ██╗████████╗
+██╔════╝██╔═══██╗████╗ ████║██╔══██╗██╔═══██╗████╗  ██║██╔════╝████╗  ██║╚══██╔══╝
+██║     ██║   ██║██╔████╔██║██████╔╝██║   ██║██╔██╗ ██║█████╗  ██╔██╗ ██║   ██║   
+██║     ██║   ██║██║╚██╔╝██║██╔═══╝ ██║   ██║██║╚██╗██║██╔══╝  ██║╚██╗██║   ██║   
+╚██████╗╚██████╔╝██║ ╚═╝ ██║██║     ╚██████╔╝██║ ╚████║███████╗██║ ╚████║   ██║   
+ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝      ╚═════╝ ╚═╝  ╚═══╝╚══════╝╚═╝  ╚═══╝   ╚═╝   
+																				  
+*/
 
 const ForgotPassword = () => {
 	const formProps = {
@@ -16,11 +53,15 @@ const ForgotPassword = () => {
 			email: {
 				placeholder: 'E-mail',
 				type: 'email',
-				icon: ''
+				icon: '',
+				validation: {
+					isEmail: true
+				}
 			}
 		},
 		submitText: 'send',
-		sendRequest: sendForgotPasswordReq,
+		sendRequestFunc: sendForgotPasswordReq,
+		resolveSuccessFunc: resolveSuccess
 		direction: 'row'
 	};
 	const cntMaxWidth = 600;

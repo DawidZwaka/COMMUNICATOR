@@ -1,9 +1,32 @@
+/*
+
+██╗███╗   ███╗██████╗  ██████╗ ██████╗ ████████╗███████╗
+██║████╗ ████║██╔══██╗██╔═══██╗██╔══██╗╚══██╔══╝██╔════╝
+██║██╔████╔██║██████╔╝██║   ██║██████╔╝   ██║   ███████╗
+██║██║╚██╔╝██║██╔═══╝ ██║   ██║██╔══██╗   ██║   ╚════██║
+██║██║ ╚═╝ ██║██║     ╚██████╔╝██║  ██║   ██║   ███████║
+╚═╝╚═╝     ╚═╝╚═╝      ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝
+														 
+*/
+
 import React from 'react';
 import Layout from '../layouts/MainLayout';
-import LoginForm from '../components/auth/loginForm';
+import SimpleForm from '../components/UI/Forms/simpleForm';
 import Container from '../components/UI/Container/Container';
 import Styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import axios from '../util/axios';
+
+/*
+
+  ██████╗ ██████╗ ███╗   ██╗███████╗████████╗ █████╗ ███╗   ██╗███████╗
+██╔════╝██╔═══██╗████╗  ██║██╔════╝╚══██╔══╝██╔══██╗████╗  ██║██╔════╝
+██║     ██║   ██║██╔██╗ ██║███████╗   ██║   ███████║██╔██╗ ██║███████╗
+██║     ██║   ██║██║╚██╗██║╚════██║   ██║   ██╔══██║██║╚██╗██║╚════██║
+╚██████╗╚██████╔╝██║ ╚████║███████║   ██║   ██║  ██║██║ ╚████║███████║
+ ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝
+																	  
+*/
 
 const Header = Styled.h1`
     text-align: center;
@@ -14,7 +37,61 @@ const Header = Styled.h1`
     transform: translate(-50%, -50%);
 `;
 
+/*
+
+██╗  ██╗███████╗██╗     ██████╗ ███████╗██████╗ ███████╗
+██║  ██║██╔════╝██║     ██╔══██╗██╔════╝██╔══██╗██╔════╝
+███████║█████╗  ██║     ██████╔╝█████╗  ██████╔╝███████╗
+██╔══██║██╔══╝  ██║     ██╔═══╝ ██╔══╝  ██╔══██╗╚════██║
+██║  ██║███████╗███████╗██║     ███████╗██║  ██║███████║
+╚═╝  ╚═╝╚══════╝╚══════╝╚═╝     ╚══════╝╚═╝  ╚═╝╚══════╝
+                                                        																				  
+*/
+
+const sendAuthReq = async inputs => await axios.post('/auth/login', inputs);
+
+const resolveSucces = updateRedirect => {
+	updateRedirect('/');
+};
+
+/*
+
+  ██████╗ ██████╗ ███╗   ███╗██████╗  ██████╗ ███╗   ██╗███████╗███╗   ██╗████████╗
+██╔════╝██╔═══██╗████╗ ████║██╔══██╗██╔═══██╗████╗  ██║██╔════╝████╗  ██║╚══██╔══╝
+██║     ██║   ██║██╔████╔██║██████╔╝██║   ██║██╔██╗ ██║█████╗  ██╔██╗ ██║   ██║   
+██║     ██║   ██║██║╚██╔╝██║██╔═══╝ ██║   ██║██║╚██╗██║██╔══╝  ██║╚██╗██║   ██║   
+╚██████╗╚██████╔╝██║ ╚═╝ ██║██║     ╚██████╔╝██║ ╚████║███████╗██║ ╚████║   ██║   
+ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝      ╚═════╝ ╚═╝  ╚═══╝╚══════╝╚═╝  ╚═══╝   ╚═╝   
+																				  
+*/
+
 const login = () => {
+	const formProps = {
+		inputs: {
+			email: {
+				placeholder: 'E-mail',
+				type: 'email',
+				icon: '',
+				validation: {
+					isEmail: true
+				}
+			},
+			password: {
+				placeholder: 'Password',
+				type: 'password',
+				icon: '',
+				validation: {
+					length: {
+						min: 8,
+						max: 200
+					}
+				}
+			}
+		},
+		submitText: 'Login',
+		sendRequestFunc: sendAuthReq,
+		resolveSuccessFunc: resolveSucces
+	};
 	const cntMaxWidth = 400;
 
 	return (
@@ -26,7 +103,7 @@ const login = () => {
 				maxWidth={cntMaxWidth}
 			>
 				<Header>Login Form</Header>
-				<LoginForm redirectUrl='/' />
+				<SimpleForm {...formProps} />
 			</Container>
 			<Container
 				direction='column'
@@ -35,7 +112,7 @@ const login = () => {
 				margin={[1.5, 0, 0, 0]}
 				maxWidth={cntMaxWidth}
 			>
-				<Link>Forgot your password?</Link>
+				<Link to='/forgot-password'>Forgot your password?</Link>
 			</Container>
 		</Layout>
 	);
