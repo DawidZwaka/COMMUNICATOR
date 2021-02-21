@@ -60,7 +60,7 @@ const FormInput = ({ type, children, validation, ...props }) => {
 	}
 
 	return (
-		<Label isValid={validation.isValid}>
+		<Label isValid={validation ? validation.isValid : true}>
 			{children}
 			<span>{input}</span>
 		</Label>

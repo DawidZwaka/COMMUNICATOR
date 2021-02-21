@@ -1,8 +1,8 @@
-import Styled from "styled-components";
-import React from "react";
+import Styled from 'styled-components';
+import React from 'react';
 
-export default ({size, children}) => {
-    const Header = Styled(size)`
+export default ({ size = 'h1', children }) => {
+	const Header = Styled(size)`
         text-align: center;
         position: absolute;
         top: 0;
@@ -11,5 +11,5 @@ export default ({size, children}) => {
         transform: translate(-50%, -50%);
     `;
 
-    return <Header>{children}</Header>;
-}
+	return <Header>{children}</Header>;
+};

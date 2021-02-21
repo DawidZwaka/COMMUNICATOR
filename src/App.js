@@ -21,6 +21,7 @@ import Signin from './containers/signin';
 import Login from './containers/login';
 import Room from './containers/room';
 import ForgotPassword from './containers/forgotPassword';
+import Friends from './containers/friends';
 
 /* 
  ██████╗ ██████╗ ███╗   ██╗███████╗████████╗ █████╗ ███╗   ██╗███████╗
@@ -52,6 +53,7 @@ class App extends React.Component {
 						<Route exact path='/room/:roomID' component={Room} />
 						<Route exact path='/signin' component={Signin} />
 						<Route exact path='/login' component={Login} />
+						<Route exact path='/friends' component={Friends} />
 						<Route
 							exact
 							path='/forgot-password'

@@ -117,7 +117,11 @@ class SimpleForm extends Form {
 		try {
 			const res = await sendRequestFunc(getParsedInputState());
 
-			return resolveSuccessFunc(this.updateRedirectionPath);
+			return resolveSuccessFunc(
+				this.updateRedirectionPath,
+				res,
+				this.props
+			);
 		} catch (res) {
 			return resolveError(
 				res,

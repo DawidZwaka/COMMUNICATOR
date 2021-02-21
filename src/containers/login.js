@@ -16,26 +16,9 @@ import Container from '../components/UI/Container/Container';
 import Styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import axios from '../util/axios';
-
-/*
-
-  ██████╗ ██████╗ ███╗   ██╗███████╗████████╗ █████╗ ███╗   ██╗███████╗
-██╔════╝██╔═══██╗████╗  ██║██╔════╝╚══██╔══╝██╔══██╗████╗  ██║██╔════╝
-██║     ██║   ██║██╔██╗ ██║███████╗   ██║   ███████║██╔██╗ ██║███████╗
-██║     ██║   ██║██║╚██╗██║╚════██║   ██║   ██╔══██║██║╚██╗██║╚════██║
-╚██████╗╚██████╔╝██║ ╚████║███████║   ██║   ██║  ██║██║ ╚████║███████║
- ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝
-																	  
-*/
-
-const Header = Styled.h1`
-    text-align: center;
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: 100%;
-    transform: translate(-50%, -50%);
-`;
+import { connect } from 'react-redux';
+import authActions from '../redux/actions/auth';
+import Header from '../components/UI/Header/Header';
 
 /*
 
@@ -50,9 +33,19 @@ const Header = Styled.h1`
 
 const sendAuthReq = async inputs => await axios.post('/auth/login', inputs);
 
-const resolveSucces = updateRedirect => {
+const resolveSucces = (updateRedirect, { data: { token } }, props) => {
+	sessionStorage.setItem('token', token);
 	updateRedirect('/');
 };
+
+const mapStateToProps = state => ({
+	loggedIn: state.auth.loggedIn
+});
+
+const mapDispatchToProps = dispatch => ({
+	setLoginStatus: status =>
+		dispatch({ type: authActions.SET_LOGIN_STATUS, status })
+});
 
 /*
 
@@ -65,7 +58,7 @@ const resolveSucces = updateRedirect => {
 																				  
 */
 
-const login = () => {
+const login = props => {
 	const formProps = {
 		inputs: {
 			email: {
@@ -103,7 +96,7 @@ const login = () => {
 				maxWidth={cntMaxWidth}
 			>
 				<Header>Login Form</Header>
-				<SimpleForm {...formProps} />
+				<SimpleForm {...formProps} {...props} />
 			</Container>
 			<Container
 				direction='column'
@@ -118,4 +111,4 @@ const login = () => {
 	);
 };
 
-export default login;
+export default connect(mapStateToProps, mapDispatchToProps)(login);

@@ -15,8 +15,6 @@ import SimpleForm from '../components/UI/Forms/simpleForm';
 import Container from '../components/UI/Container/Container';
 import Header from '../components/UI/Header/Header';
 import axios from '../util/axios';
-import ResolveError from '../util/resolveError';
-import validator from 'validator';
 
 /*
 
@@ -34,7 +32,7 @@ const sendForgotPasswordReq = async inputs =>
 
 const resolveSuccess = updateRedirect => {
 	updateRedirect('/forgot-password/?active');
-}
+};
 
 /*
 
@@ -61,7 +59,7 @@ const ForgotPassword = () => {
 		},
 		submitText: 'send',
 		sendRequestFunc: sendForgotPasswordReq,
-		resolveSuccessFunc: resolveSuccess
+		resolveSuccessFunc: resolveSuccess,
 		direction: 'row'
 	};
 	const cntMaxWidth = 600;
